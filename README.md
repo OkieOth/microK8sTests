@@ -3,7 +3,15 @@ Some Vagrant setups to play around with mircoK8s
 
 To install provision the used virtual machines is ansible used
 
+# Requirements
+* installed VirtualBox or HyperV
+* installed vagrant
+* installed Ansible
+
+Tested under Ubuntu 20.04
+
 # Usage
+
 
 # Folder Project Structure
 * ansible - Ansible scripts to prepare the virtual machines

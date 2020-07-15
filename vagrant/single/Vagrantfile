@@ -1,0 +1,40 @@
+$printInfoScript = <<SCRIPT
+  ipAddr=`ip address | grep inet | grep eth1 | awk '{print $2}' | sed -e "s-\/.*--"`
+
+  #print IP address
+  echo "###################### microK8s - single ##############################################"
+  echo "IP-address ($adapterName) of the vm: $ipAddr"
+  echo "User: admin"
+  echo "Password: demo123"
+SCRIPT
+
+# Define base image
+Vagrant.configure(2) do |config|
+  config.vm.box = "bento/ubuntu-20.04"
+  config.vm.box_check_update = false
+  config.vm.network "private_network", type: "dhcp"
+  config.vm.synced_folder '.', '/vagrant', disabled: true
+
+# Set Memory to 4096 MB and cpu count to 2 for hyperV and Vbox provider
+  config.vm.provider "hyperv" do |hv|
+    hv.cpus = 1
+    hv.memory = 4096
+  end
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.cpus = 1
+    vb.memory = 4096
+  end
+
+  config.vm.provision "shell", inline: <<-SHELL
+    useradd -m admin
+    echo "admin:demo123" | chpasswd
+    usermod -aG sudo admin
+    apt-get update
+    apt-get install -y python
+  SHELL
+
+  config.vm.provision "shell", privileged: false, run: "always" do |s|
+    s.inline = $printInfoScript
+  end
+end
