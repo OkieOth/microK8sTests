@@ -11,7 +11,10 @@ To install provision the used virtual machines is ansible used
 Tested under Ubuntu 20.04
 
 # Usage
-
+```bash
+# configuration of ssh key usage to login into the virtual machines
+./bin/configure_ssh.sh
+```
 
 # Folder Project Structure
 * ansible - Ansible scripts to prepare the virtual machines
