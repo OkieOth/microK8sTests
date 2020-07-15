@@ -27,7 +27,7 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.provision "shell", inline: <<-SHELL
-    useradd -m admin
+    useradd -m -s /bin/bash admin
     echo "admin:demo123" | chpasswd
     usermod -aG sudo admin
     apt-get update

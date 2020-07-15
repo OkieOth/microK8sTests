@@ -7,14 +7,37 @@ To install provision the used virtual machines is ansible used
 * installed VirtualBox or HyperV
 * installed vagrant
 * installed Ansible
+* installed sshpass
 
 Tested under Ubuntu 20.04
 
 # Usage
+## General
 ```bash
 # configuration of ssh key usage to login into the virtual machines
 ./bin/configure_ssh.sh
 ```
+
+## Setup a single machine microK8s instance
+```bash
+# start/create the VM for the installation
+cd REPO_ROOT/vagrant/single
+vagrant up
+
+# configuration of ssh key authentication for user 'admin'
+REPO_ROOT/bin/configure_ssh.sh IP_OF_THE_NEW_VM admin single demo123
+
+# connect to the virtua machine
+REPO_ROOT/bin/connect.sh IP_OF_THE_NEW_VM admin single
+
+# install microK8s
+REPO_ROOT/bin/install_single.sh 172.28.128.7 admin single demo123
+
+# for completeness - destroy/remove the VM
+cd REPO_ROOT/vagrant/single
+vagrant destroy
+```
+
 
 # Folder Project Structure
 * ansible - Ansible scripts to prepare the virtual machines
