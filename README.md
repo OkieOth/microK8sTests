@@ -37,6 +37,18 @@ vagrant up
 # install microK8s, with autodiscovery if the VM IP
 REPO_ROOT/bin/install_single.sh
 
+# connect to the single instance installation
+REPO_ROOT/bin/connect_single.sh
+
+# test the state of microk8s
+microk8s status --wait-ready
+
+# query existing nodes
+microk8s kubectl get nodes
+
+# query existing services
+microk8s kubectl get services
+
 
 # for completeness - destroy/remove the VM
 cd REPO_ROOT/vagrant/single

@@ -13,6 +13,7 @@
         - apt-transport-https
         - ca-certificates
         - curl
+        - net-tools
         - gnupg-agent
         - software-properties-common
       state: latest

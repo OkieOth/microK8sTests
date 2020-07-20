@@ -2,6 +2,23 @@
     become: true
     snap:
       name: microk8s
-      classic: true 
+      classic: true
+      
+  - name: Add the main user to docker group
+    become: true
+    user:
+      name: "{{ ssh_user }}"
+      groups:
+        - docker
+        - adm
+        - sudo
+        - microk8s
+
+  - name: enable basic add-ons for microk8s
+    become: true
+    become_user: admin
+    shell:
+      cmd: /snap/bin/microk8s enable dns dashboard storage helm helm3
+  
 
   
