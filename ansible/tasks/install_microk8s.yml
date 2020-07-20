@@ -1,0 +1,7 @@
+  - name: install microk8s
+    become: true
+    snap:
+      name: microk8s
+      classic: true 
+
+  

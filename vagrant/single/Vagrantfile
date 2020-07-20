@@ -1,9 +1,10 @@
 $printInfoScript = <<SCRIPT
   ipAddr=`ip address | grep inet | grep eth1 | awk '{print $2}' | sed -e "s-\/.*--"`
-
+  hostname=`hostname`
   #print IP address
   echo "###################### microK8s - single ##############################################"
-  echo "IP-address ($adapterName) of the vm: $ipAddr"
+  echo "IP-address of the vm: $ipAddr"
+  echo "Local DNS name: ${hostname}.local"
   echo "User: admin"
   echo "Password: demo123"
 SCRIPT
@@ -11,6 +12,7 @@ SCRIPT
 # Define base image
 Vagrant.configure(2) do |config|
   config.vm.box = "bento/ubuntu-20.04"
+  config.vm.hostname = "singleMicroK8s"
   config.vm.box_check_update = false
   config.vm.network "private_network", type: "dhcp"
   config.vm.synced_folder '.', '/vagrant', disabled: true
@@ -32,6 +34,7 @@ Vagrant.configure(2) do |config|
     usermod -aG sudo admin
     apt-get update
     apt-get install -y python
+    apt-get install -y avahi-daemon libnss-mdns
   SHELL
 
   config.vm.provision "shell", privileged: false, run: "always" do |s|

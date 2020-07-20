@@ -1,0 +1,15 @@
+---
+- name: setup single microK8s instance 
+  hosts: all
+  become_method: sudo
+  vars:
+    ssh_user: "{{ lookup('env','SSH_USER') }}"
+  
+  tasks:
+    - name: install docker
+      include:
+        file: "tasks/install_docker.yml"
+    - name: install docker
+      include:
+        file: "tasks/install_microk8s.yml"
+      

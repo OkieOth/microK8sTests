@@ -1,0 +1,60 @@
+  - name: Check if "Docker CE" is installed
+    shell: dpkg-query -W docker-ce
+    register: docker_ce_installed_ubuntu
+    failed_when: docker_ce_installed_ubuntu.rc > 1
+    changed_when: False
+    when: ansible_facts['distribution'] == "Ubuntu"
+
+  - name: Preparing set up of repository for installing Docker
+    become: true
+    apt:
+      force_apt_get: yes
+      name:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - gnupg-agent
+        - software-properties-common
+      state: latest
+    when:
+      - ansible_facts['distribution'] == "Ubuntu"
+      - docker_ce_installed_ubuntu.rc == 1
+  
+  - name: Add Docker’s official GPG key
+    become: true
+    shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+    args:
+      warn: false
+    when:
+      - ansible_facts['distribution'] == "Ubuntu"
+      - docker_ce_installed_ubuntu.rc == 1
+
+  - name: Add Docker apt-repository
+    become: true
+    shell: add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    when:
+      - ansible_facts['distribution'] == "Ubuntu"
+      - docker_ce_installed_ubuntu.rc == 1
+
+  - name: Install Docker CE from repository
+    become: true
+    apt:
+      force_apt_get: yes
+      name:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+      state: latest
+      update_cache: yes
+    when:
+      - ansible_facts['distribution'] == "Ubuntu"
+      - docker_ce_installed_ubuntu.rc == 1
+
+  - name: Add the main user to docker group
+    become: true
+    user:
+      name: "{{ ssh_user }}"
+      groups:
+        - docker
+        - adm
+        - sudo

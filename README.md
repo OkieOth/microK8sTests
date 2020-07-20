@@ -9,7 +9,7 @@ To install provision the used virtual machines is ansible used
 * installed Ansible
 * installed sshpass
 
-Tested under Ubuntu 20.04
+Tested under Ubuntu 20.04 with virtualBox
 
 # Usage
 ## General
@@ -24,14 +24,19 @@ Tested under Ubuntu 20.04
 cd REPO_ROOT/vagrant/single
 vagrant up
 
+# optional - is also called by the install script 
 # configuration of ssh key authentication for user 'admin'
-REPO_ROOT/bin/configure_ssh.sh IP_OF_THE_NEW_VM admin single demo123
+#REPO_ROOT/bin/configure_ssh.sh IP_OF_THE_NEW_VM admin single demo123
 
-# connect to the virtua machine
-REPO_ROOT/bin/connect.sh IP_OF_THE_NEW_VM admin single
+# optional - connect to the virtua machine
+#REPO_ROOT/bin/connect.sh IP_OF_THE_NEW_VM admin single
 
-# install microK8s
-REPO_ROOT/bin/install_single.sh 172.28.128.7 admin single demo123
+# optional - install microK8s
+# REPO_ROOT/bin/install_single.sh 172.28.128.7 admin single demo123
+
+# install microK8s, with autodiscovery if the VM IP
+REPO_ROOT/bin/install_single.sh
+
 
 # for completeness - destroy/remove the VM
 cd REPO_ROOT/vagrant/single
