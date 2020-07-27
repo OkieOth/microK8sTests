@@ -19,6 +19,14 @@
     become_user: admin
     shell:
       cmd: /snap/bin/microk8s enable dns dashboard storage helm helm3
+
+
+  - name: starting the proxy in a tmux session
+    become: true
+    become_user: admin
+    shell:
+      cmd: tmux ls | grep microk8s-proxy > /dev/null || tmux new -d -s microk8s-proxy /snap/bin/microk8s.kubectl proxy --accept-hosts=.* --address=0.0.0.0
+        
   
 
   

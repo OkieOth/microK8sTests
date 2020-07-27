@@ -1,0 +1,19 @@
+apiVersion: v1
+clusters:
+- cluster:
+    insecure-skip-tls-verify: true
+    server: https://singlemicrok8s.local:16443
+  name: microk8s-cluster
+contexts:
+- context:
+    cluster: microk8s-cluster
+    user: admin
+  name: microk8s
+current-context: microk8s
+kind: Config
+preferences: {}
+users:
+- name: admin
+  user:
+    token: emhrNUQ1ZFV6MFk4WHY3UkVWQmw3WUxyL1dKVUJYTnBUZUpOVGd2YTc4RT0K
+
