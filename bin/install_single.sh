@@ -11,12 +11,17 @@ scriptPos=${0%/*}
 # $2 - SSH_USER
 # $3 - SUDO password for the VM
 
-ping -c 1 singleMicroK8s.local
 
 if [[ -z "$1" ]]; then
-    if ping -c 1 singleMicroK8s.local; then
-        SSH_HOST=singleMicroK8s.local
+    if [[ -f $scriptPos/../vagrant/single/ip_address.tmp ]]; then
+        hostToConnect=`cat $scriptPos/../vagrant/single/ip_address.tmp`
     else
+        hostToConnect=singleMicroK8s.local
+    fi
+    if ping -c 1 "$hostToConnect"; then
+        SSH_HOST=$hostToConnect
+    else
+        hostToConnect=''
         while [[ -z ${SSH_HOST} ]] ; do
             read -r -p "Please enter the id address for the ssh connection
 > " SSH_HOST
@@ -27,7 +32,7 @@ else
 fi
 
 if [ -z "$2" ]; then
-    if [[ "$SSH_HOST" == "singleMicroK8s.local" ]]; then
+    if ! [[ -z "$hostToConnect" ]]; then
         SSH_USER=admin
     else
         while [[ -z ${SSH_USER} ]] ; do
@@ -58,7 +63,7 @@ fi
 if ! [[ -z "$3" ]]; then
     SSH_PASSWORD=$3
 else
-    if [[ "$SSH_HOST" == "singleMicroK8s.local" ]]; then
+    if ! [[ -z "$hostToConnect" ]]; then
         SSH_PASSWORD=demo123
     else
         while [[ -z ${SSH_PASSWORD} ]] ; do

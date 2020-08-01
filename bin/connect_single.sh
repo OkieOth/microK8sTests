@@ -1,4 +1,10 @@
 #!/bin/bash
 scriptPos=${0%/*}
 
-$scriptPos/connect.sh singleMicroK8s.local admin single
+if [[ -f $scriptPos/../vagrant/single/ip_address.tmp ]]; then
+    hostToConnect=`cat $scriptPos/../vagrant/single/ip_address.tmp`
+else
+    hostToConnect=singleMicroK8s.local
+fi
+
+$scriptPos/connect.sh "$hostToConnect" admin single

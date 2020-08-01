@@ -3,7 +3,15 @@ scriptPos=${0%/*}
 
 # helper script to connect kubectl to a single instance microk8s installation
 
-SSH_HOST=singleMicroK8s.local 
+if [[ -f $scriptPos/../vagrant/single/ip_address.tmp ]]; then
+    hostToConnect=`cat $scriptPos/../vagrant/single/ip_address.tmp`
+else
+    hostToConnect=singleMicroK8s.local
+fi
+
+
+
+SSH_HOST=$hostToConnect 
 SSH_USER=admin
 CONFIG_DEST=single
 

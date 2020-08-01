@@ -14,12 +14,14 @@
         - sudo
         - microk8s
 
+  - name: reset ssh connection
+    meta: reset_connection      
+    
   - name: enable basic add-ons for microk8s
     become: true
     become_user: admin
     shell:
       cmd: /snap/bin/microk8s enable dns dashboard storage helm helm3
-
 
   - name: starting the proxy in a tmux session
     become: true

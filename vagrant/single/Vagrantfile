@@ -7,6 +7,7 @@ $printInfoScript = <<SCRIPT
   echo "Local DNS name: ${hostname}.local"
   echo "User: admin"
   echo "Password: demo123"
+  echo $ipAddr > /vagrant/ip_address.tmp
 SCRIPT
 
 # Define base image
@@ -15,7 +16,7 @@ Vagrant.configure(2) do |config|
   config.vm.hostname = "singleMicroK8s"
   config.vm.box_check_update = false
   config.vm.network "private_network", type: "dhcp"
-  config.vm.synced_folder '.', '/vagrant', disabled: true
+  config.vm.synced_folder '.', '/vagrant', disabled: false
 
 # Set Memory to 4096 MB and cpu count to 2 for hyperV and Vbox provider
   config.vm.provider "hyperv" do |hv|
