@@ -1,10 +1,20 @@
 ## start the kubectl proxy to access the dashboard
+This can be ran on the master node but it opens the dashboard from the 
+master node to the public net. If you do so it seems you can't use the
+common token authentication for e.g. an external host.
+
+**Attention**, it seems much smoother to start the proxy on your access
+machine. An example is in `../bin/proxy_singleDashboard.sh`. In this case
+kubectl acts in the same way as ssh and tunnels node port to localhost.
+
 ```bash
 microk8s.kubectl proxy --accept-hosts=.* --address=0.0.0.0 &
 ```
 
 
 ## To enable the skip of the login in the dashbord do the following steps
+**Attention**, avoid this on production!
+
 Source: `https://github.com/ubuntu/microk8s/issues/292`
 ```bash
 # start editing the configuration
@@ -55,4 +65,18 @@ kubectl --kubeconfig=single-microk8s --user=admin --token=emhrNUQ1ZFV6MFk4WHY3Uk
 
 ```
 
+## Proxy dashboard from another machine
+An example is implemented in `../bin/proxy_singleDashboard.sh`.
+
+```bash
+## retrieve the access token and print it. It is implizit called in 
+## proxy_singleDashboard.sh
+#./bin/print_singleToken.sh
+
+## use kubectl to proxy the dashboard to local and open it in your default 
+## browser. The script uses port 9090 per defaut
+./bin/proxy_singleDashboard.sh
+
+
+```
 
